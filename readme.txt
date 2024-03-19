@@ -19,11 +19,10 @@ Mettre a jour la liste des requirements:
 pip freeze > requirements.txt
 
 
-
 Pour lancer le serveur:
 export FLASK_APP=cultureTime.py
 flask run
 
 
 Pour acceder au site:
-localhost
+http://192.168.1.143:8080/
