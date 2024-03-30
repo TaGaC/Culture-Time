@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, session, flash
+from flask import Flask, render_template, request, redirect, session, flash, url_for
+
 from flask_session import Session
 
 from functions import *
@@ -11,6 +12,15 @@ app.config["SESSION_TYPE"] = "filesystem"
 app.config["SECRET_KEY"] = '35a66b836297c6d61b8e68b287fe44fadb0d7c2d24b8d378890c09d30fcf7a89'
 Session(app)
 
+# Liste des questions et réponses
+questions = [
+    {
+        "question": "Does the UK have a Prime Minister?",
+        "correct_answer": "True",
+        "explanation": "The United Kingdom has a parliamentary system of government, in which the Prime Minister is the head of government. The Prime Minister is appointed by the monarch and is usually the leader of the political party with the most seats in the House of Commons."
+    }
+    # Ajoutez d'autres questions ici au besoin
+]
 
 #def des routes:
  
@@ -30,6 +40,14 @@ def sign_up():
 @app.route("/profile")
 def profile():
     return render_template("profile.html", title = "Profile")
+
+
+@app.route("/dailyquestion", methods=["GET", "POST"])
+def dailyquestion():
+    # Récupérer la question du jour
+    today_question = questions[0]  # Vous pouvez personnaliser cette logique pour choisir une question différente chaque jour
+    correct_answer = today_question["correct_answer"]  # Récupérer la bonne réponse
+    return render_template("dailyquestion.html", title="Daily Question", question=today_question, correct_answer=correct_answer)
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port='8080')

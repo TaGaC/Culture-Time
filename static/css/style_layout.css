@@ -1,0 +1,21 @@
+/* supprimez la marge par défaut du corps de la page */
+body {
+    margin: 0;
+  }
+  /* ajoutez une hauteur minimale égale à la hauteur de la fenêtre du navigateur au conteneur principal de la page */
+  .page-container {
+    min-height: 100vh;
+    /* utilisez la propriété flex pour aligner le footer en bas de la page */
+    display: flex;
+    flex-direction: column;
+  }
+  /* ajoutez un espace entre le contenu principal de la page et le footer */
+  .main-content {
+    flex: 1;
+    padding: 20px;
+  }
+  /* ajoutez une couleur de fond et un espace entre le contenu du footer et ses bords */
+  footer {
+    background-color: #f5f5f5;
+    padding: 20px;
+  }
