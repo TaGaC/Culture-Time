@@ -47,13 +47,12 @@ def dailyquestion():
     return render_template("dailyquestion.html", title="Daily Question", question=question, reponses=reponses, bonne_reponse=bonne_reponse, corps=corps, source=source)
 
 # Route pour la page "records"
-@app.route("/records")
-def records():
+@app.route("/records/<int:i>")
+def records(i):
     # Récupérez toutes les anecdotes de la base de données
-    all_anecdotes = get_all_anecdotes()
-    print("toutes les quesitons: ",all_anecdotes)
+    i_anecdotes = get_anecdotes(i)
     # Rendez le modèle "records.html" en passant les données des anecdotes
-    return render_template("records.html", title="Records", questions=all_anecdotes)
+    return render_template("records.html", title="Records", questions=i_anecdotes, i=i)
 
 
 @app.route("/question/<int:i>", methods=["GET", "POST"])
@@ -67,10 +66,12 @@ def selected_question(i):
         bonne_reponse = res[0][3]
         corps = res[0][4]
         source = res[0][5]
-        return render_template("question.html", title="Question", question=question, reponses=reponses, bonne_reponse=bonne_reponse, corps=corps, source=source)
+        date = res[0][6]
+        return render_template("question.html", title="Question", question=question, reponses=reponses, bonne_reponse=bonne_reponse, corps=corps, source=source, date=date)
     else:
         # Gérer le cas où aucune question n'est trouvée pour l'ID donné
         return "Question not found", 404
+    
 
 
 if __name__ == "__main__":

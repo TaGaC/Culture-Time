@@ -3,38 +3,51 @@ const falseButton = document.getElementById('false-button');
 const explanationDiv = document.getElementById('explanation');
 const answerMessageDiv = document.getElementById('answer-message');
 
-function setAnswer(value) {
-    document.getElementById('answer').value = value;
+function setAnswer(answer, button) {
+    const chosenAnswer = answer;
+    const correctAnswer = trueButton.getAttribute('data-correct-answer');
+
+    if (chosenAnswer === correctAnswer & button === "trueButton") {
+        answerMessageDiv.innerText = "Correct!";
+        answerMessageDiv.classList.add('text-green-700'); // Ajouter la classe de couleur verte
+        answerMessageDiv.classList.remove('text-red-700'); // Retirer la classe de couleur rouge
+        trueButton.classList.add('bg-green-700'); // Ajouter la classe de couleur de fond verte
+        falseButton.classList.remove('bg-red-700'); // Retirer la classe de couleur de fond rouge
+    }
+    if (chosenAnswer === correctAnswer & button === "falseButton") {
+        answerMessageDiv.innerText = "Correct!";
+        answerMessageDiv.classList.add('text-green-700'); // Ajouter la classe de couleur verte
+        answerMessageDiv.classList.remove('text-red-700'); // Retirer la classe de couleur rouge
+        falseButton.classList.add('bg-green-700'); // Ajouter la classe de couleur de fond verte
+        trueButton.classList.remove('bg-red-700'); // Retirer la classe de couleur de fond rouge
+    }
+    if (chosenAnswer !== correctAnswer) {
+        answerMessageDiv.innerText = "Incorrect!";
+        answerMessageDiv.classList.add('text-red-700'); // Ajouter la classe de couleur rouge
+        answerMessageDiv.classList.remove('text-green-700'); // Retirer la classe de couleur verte
+        if (button === "trueButton") {
+            trueButton.classList.add('bg-red-700'); // Ajouter la classe de couleur de fond rouge
+            falseButton.classList.add('bg-green-700'); // Retirer la classe de couleur de fond verte
+        }
+        if (button === "falseButton") {
+            falseButton.classList.add('bg-red-700'); // Ajouter la classe de couleur de fond rouge
+            trueButton.classList.add('bg-green-700'); // Retirer la classe de couleur de fond verte
+        }
+    }
+    
+
+
+    
+    
+    explanationDiv.classList.remove('hidden');
 }
 
-// Replace this with the correct answer for the question
-const correctAnswer = '{{ bonne_reponse }}';  // Remplacer '{{ bonne_reponse }}' par la bonne réponse depuis Flask
-
-// Add event listeners to the buttons
 trueButton.addEventListener('click', () => {
-    const chosenAnswer = '{{ reponses[0] }}';  // Remplacer '{{ reponses[0] }}' par la première réponse depuis Flask
-    if (chosenAnswer === correctAnswer) {
-        trueButton.classList.add('bg-green-700');
-        falseButton.classList.add('bg-red-700');
-        answerMessageDiv.innerText = "Correct!";
-    } else {
-        trueButton.classList.add('bg-red-700');
-        falseButton.classList.add('bg-green-700');
-        answerMessageDiv.innerText = "Incorrect!";
-    }
-    explanationDiv.classList.remove('hidden');
+    const chosenAnswer = trueButton.getAttribute('data-answer');
+    setAnswer(chosenAnswer, "trueButton");
 });
 
 falseButton.addEventListener('click', () => {
-    const chosenAnswer = '{{ reponses[1] }}';  // Remplacer '{{ reponses[1] }}' par la deuxième réponse depuis Flask
-    if (chosenAnswer === correctAnswer) {
-        falseButton.classList.add('bg-green-700');
-        trueButton.classList.add('bg-red-700');
-        answerMessageDiv.innerText = "Correct!";
-    } else {
-        falseButton.classList.add('bg-red-700');
-        trueButton.classList.add('bg-green-700');
-        answerMessageDiv.innerText = "Incorrect!";
-    }
-    explanationDiv.classList.remove('hidden');
+    const chosenAnswer = falseButton.getAttribute('data-answer');
+    setAnswer(chosenAnswer, "falseButton");
 });

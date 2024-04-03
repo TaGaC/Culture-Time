@@ -132,28 +132,32 @@ def affichage_du_jour():
     return res
 
 # Fonction pour récupérer toutes les lignes de la table Anecdotes
-def get_all_anecdotes():
+def get_anecdotes(i):
     # Connexion à la base de données
     connection = sqlite3.connect('./data/cultureTime.db')
     cursor = connection.cursor()
 
-    # Exécution de la requête SQL pour sélectionner toutes les lignes de la table Anecdotes
-    cursor.execute("SELECT * FROM Anecdotes")
+    # Exécution de la requête SQL pour sélectionner les premières i lignes de la table Anecdotes
+    cursor.execute("SELECT * FROM Anecdotes LIMIT ?", (i,))  # Utilisation de paramètres pour éviter les injections SQL
 
     # Récupération de toutes les lignes
-    all_rows = cursor.fetchall()
+    selected_rows = cursor.fetchall()
 
     # Fermeture du curseur et de la connexion
     cursor.close()
     connection.close()
 
-    return all_rows
+    return selected_rows
+
+
 
 
 def select_question_number(i):
     # Fonction pour sélectionner une question en fonction de son ID
-    query = '''SELECT titre, question, reponses, bonne_reponse, corps, source 
+    query = '''SELECT titre, question, reponses, bonne_reponse, corps, source, date 
                FROM Anecdotes 
                WHERE id_anecdote = ?'''
     res = requete_db_avec_reponse(query, (i,))
     return res
+
+
