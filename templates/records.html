@@ -61,57 +61,32 @@
     <!-- List of questions -->
     <div class="bg-white shadow overflow-hidden sm:rounded-md mt-16">
         <div class="flow-root ">
-            <ul role="list" class="-my-5 divide-y divide-gray-200">
+            <ul role="list" class="-my-5 divide-y divide-gray-200">               
+                {% for question in questions %}
                 <li class="relative bg-white py-5 px-4 hover:bg-gray-50 focus-within:ring-2 focus-within:ring-inset focus-within:ring-red-600">
-                    <a href="/day" class="block focus:outline-none">
+                    <a href="/question/{{ question[0] }}" class="block focus:outline-none">
                         <div class="flex items-center px-4 py-4 sm:px-6">
                             <div class="relative focus-within:ring-2 focus-within:ring-red-500">
                                 <h3 class="text-sm font-semibold text-gray-800">
-                                <a href="/" class="hover:underline focus:outline-none">
-                                    <!-- Extend touch target to entire panel -->
-                                    <span class="absolute inset-0" aria-hidden="true"></span>
-                                    Office closed on July 2nd
-                                </a>
+                                    <a href="/question/{{ loop.index }}" class="hover:underline focus:outline-none">
+                                        <!-- Extend touch target to entire panel -->
+                                        <span class="absolute inset-0" aria-hidden="true"></span>
+                                        {{ question[3] }}
+                                    </a>
                                 </h3>
-                                <p class="mt-1 text-sm text-gray-600 line-clamp-2">Cum qui rem deleniti. Suscipit in dolor veritatis sequi aut. Vero ut earum quis deleniti. Ut a sunt eum cum ut repudiandae possimus. Nihil ex tempora neque cum consectetur dolores.</p>
+                                <p class="mt-1 text-sm text-gray-600 line-clamp-2">{{ question[4] }}</p>
                             </div>
-                    
                             <!-- Chevron à droite -->
                             <div>
                                 <!-- Heroicon name: solid/chevron-right -->
                                 <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
                                 </svg>
                             </div>
                         </div>
                     </a>
                 </li>
-
-                <li class="relative bg-white py-5 px-4 hover:bg-gray-50 focus-within:ring-2 focus-within:ring-inset focus-within:ring-red-600">
-                    <a href="/day" class="block focus:outline-none">
-                        <div class="flex items-center px-4 py-4 sm:px-6">
-                            <div class="relative focus-within:ring-2 focus-within:ring-red-500">
-                                <h3 class="text-sm font-semibold text-gray-800">
-                                <a href="/" class="hover:underline focus:outline-none">
-                                    <!-- Extend touch target to entire panel -->
-                                    <span class="absolute inset-0" aria-hidden="true"></span>
-                                    Office closed on July 2nd
-                                </a>
-                                </h3>
-                                <p class="mt-1 text-sm text-gray-600 line-clamp-2">Cum qui rem deleniti. Suscipit in dolor veritatis sequi aut. Vero ut earum quis deleniti. Ut a sunt eum cum ut repudiandae possimus. Nihil ex tempora neque cum consectetur dolores.</p>
-                            </div>
-                    
-                            <!-- Chevron à droite -->
-                            <div>
-                                <!-- Heroicon name: solid/chevron-right -->
-                                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-
+                {% endfor %}
             </ul>
         </div>
         <div class="mt-10">

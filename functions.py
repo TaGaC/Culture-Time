@@ -12,7 +12,7 @@ phase_tests = False
 
 # fonction permettant de créer un cruseur pour naviguer dans la base de donnée.
 def connectdb():
-    db = sqlite3.connect('cultureTime.db')
+    db = sqlite3.connect('./data/cultureTime.db')
     cursor = db.cursor()
     return db, cursor
 
@@ -50,7 +50,7 @@ def initdb():
     query = '''DROP TABLE IF EXISTS Anecdotes;
     CREATE TABLE Anecdotes (
 	    id_anecdote	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-        date	INTEGER NOT NULL,
+        date	TEXT NOT NULL,
         auteur	TEXT NOT NULL,
         titre	TEXT NOT NULL,
         question TEXT NOT NULL,
@@ -122,8 +122,38 @@ def affichage_anecdote(id_anecdote):
 
 def affichage_du_jour():
     # Fonction renvoyant une liste de tuples correspondant à l'anecdote du jour
-    # Cette fonction ne renvoit que le titre, l'auteur, la description et la date
-    query = '''SELECT titre, question, reponses, bonne_reponse, corps, source, date FROM Anecdotes WHERE date = ?'''
-    args = (date.today().strftime('%Y%m%d'))
-    res = requete_db_avec_reponse(query, args)
+    # Cette fonction ne renvoit que le titre, la question, les réponses, la bonne réponse, le corps, la source et la date
+    query = '''SELECT titre, question, reponses, bonne_reponse, corps, source, date 
+               FROM Anecdotes 
+               ORDER BY date DESC
+               LIMIT 1'''
+    res = requete_db_avec_reponse(query, ())
+           
+    return res
+
+# Fonction pour récupérer toutes les lignes de la table Anecdotes
+def get_all_anecdotes():
+    # Connexion à la base de données
+    connection = sqlite3.connect('./data/cultureTime.db')
+    cursor = connection.cursor()
+
+    # Exécution de la requête SQL pour sélectionner toutes les lignes de la table Anecdotes
+    cursor.execute("SELECT * FROM Anecdotes")
+
+    # Récupération de toutes les lignes
+    all_rows = cursor.fetchall()
+
+    # Fermeture du curseur et de la connexion
+    cursor.close()
+    connection.close()
+
+    return all_rows
+
+
+def select_question_number(i):
+    # Fonction pour sélectionner une question en fonction de son ID
+    query = '''SELECT titre, question, reponses, bonne_reponse, corps, source 
+               FROM Anecdotes 
+               WHERE id_anecdote = ?'''
+    res = requete_db_avec_reponse(query, (i,))
     return res

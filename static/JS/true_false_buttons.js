@@ -8,11 +8,11 @@ function setAnswer(value) {
 }
 
 // Replace this with the correct answer for the question
-const correctAnswer = 'True';  // Remplacer '{{ correct_answer }}' par la bonne réponse depuis Flask
+const correctAnswer = '{{ bonne_reponse }}';  // Remplacer '{{ bonne_reponse }}' par la bonne réponse depuis Flask
 
 // Add event listeners to the buttons
 trueButton.addEventListener('click', () => {
-    const chosenAnswer = 'True';
+    const chosenAnswer = '{{ reponses[0] }}';  // Remplacer '{{ reponses[0] }}' par la première réponse depuis Flask
     if (chosenAnswer === correctAnswer) {
         trueButton.classList.add('bg-green-700');
         falseButton.classList.add('bg-red-700');
@@ -26,7 +26,7 @@ trueButton.addEventListener('click', () => {
 });
 
 falseButton.addEventListener('click', () => {
-    const chosenAnswer = 'False';
+    const chosenAnswer = '{{ reponses[1] }}';  // Remplacer '{{ reponses[1] }}' par la deuxième réponse depuis Flask
     if (chosenAnswer === correctAnswer) {
         falseButton.classList.add('bg-green-700');
         trueButton.classList.add('bg-red-700');

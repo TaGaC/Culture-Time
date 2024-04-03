@@ -12,20 +12,6 @@ app.config["SESSION_TYPE"] = "filesystem"
 app.config["SECRET_KEY"] = '35a66b836297c6d61b8e68b287fe44fadb0d7c2d24b8d378890c09d30fcf7a89'
 Session(app)
 
-# Liste des questions et réponses
-questions = [
-    {
-        "question": "Does the UK have a Prime Minister?",
-        "correct_answer": "True",
-        "explanation": "The United Kingdom has a parliamentary system of government, in which the Prime Minister is the head of government. The Prime Minister is appointed by the monarch and is usually the leader of the political party with the most seats in the House of Commons."
-    }
-    # Ajoutez d'autres questions ici au besoin
-]
-
-# Utiliser la base de données
-initdb()
-init_data()
-cursor, db = connectdb()
 
 #def des routes:
  
@@ -52,18 +38,46 @@ def profile():
 def dailyquestion():
     # Récupérer la question du jour
     res = affichage_du_jour()
-    titre = res[0]
-    question = res[1]
-    reponses = res[2]
-    bonne_reponse = res[3]
-    corps = res[4]
-    source = res[5]
-    return render_template("dailyquestion.html", title="Daily Question", question=today_question, correct_answer=correct_answer)
+    titre = res[0][0]
+    question = res[0][1]
+    reponses = res[0][2].split(",")
+    bonne_reponse = res[0][3]
+    corps = res[0][4]
+    source = res[0][5]
+    return render_template("dailyquestion.html", title="Daily Question", question=question, reponses=reponses, bonne_reponse=bonne_reponse, corps=corps, source=source)
 
+# Route pour la page "records"
 @app.route("/records")
 def records():
-    return render_template("records.html", title = "Records")
+    # Récupérez toutes les anecdotes de la base de données
+    all_anecdotes = get_all_anecdotes()
+    print("toutes les quesitons: ",all_anecdotes)
+    # Rendez le modèle "records.html" en passant les données des anecdotes
+    return render_template("records.html", title="Records", questions=all_anecdotes)
+
+
+@app.route("/question/<int:i>", methods=["GET", "POST"])
+def selected_question(i):
+    # Récupérer la question choisie en fonction de son ID
+    res = select_question_number(i)
+    if res:
+        titre = res[0][0]
+        question = res[0][1]
+        reponses = res[0][2].split(",")
+        bonne_reponse = res[0][3]
+        corps = res[0][4]
+        source = res[0][5]
+        return render_template("question.html", title="Question", question=question, reponses=reponses, bonne_reponse=bonne_reponse, corps=corps, source=source)
+    else:
+        # Gérer le cas où aucune question n'est trouvée pour l'ID donné
+        return "Question not found", 404
+
 
 if __name__ == "__main__":
+    # Utiliser la base de données
+    if (False):
+        initDB()
+    if (False):
+        init_data()
     app.run(debug=True, host='0.0.0.0', port='8080')
 
