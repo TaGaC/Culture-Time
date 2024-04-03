@@ -53,13 +53,13 @@ def initdb():
         date	INTEGER NOT NULL,
         auteur	TEXT NOT NULL,
         titre	TEXT NOT NULL,
-        description TEXT NOT NULL,
+        question TEXT NOT NULL,
+        nombre_reponses INTEGER NOT NULL,
+        reponses TEXT NOT NULL,
+        bonne_reponse TEXT NOT NULL,
         corps	TEXT NOT NULL,
+        source    TEXT,
         image TEXT,
-        questionnaire INTEGER NOT NULL DEFAULT 0 CHECK (questionnaire IN (0, 1)),
-        question TEXT,
-        nombre_reponses INTEGER,
-        reponses TEXT,
         categorie INTEGER NOT NULL,
         FOREIGN KEY (categorie) REFERENCES Categories(id_categorie)
     );
@@ -80,23 +80,28 @@ def initdb():
 
 def init_data():
     # Fonction ajoutant les données d'un csv dans la BD
-    f = open('data.csv', 'r')
+    f = open('data/data.csv', 'r')
     F = f.readlines()
     for k in range(len(F)):
         l = F[k].strip().split(';')
-        query = '''INSERT INTO Anecdotes (date, auteur, titre, anecdote, corps, image, questionnaire, question, nombre_reponses, reponses, categorie) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
+        query = '''INSERT INTO Anecdotes (date, auteur, titre, question, nombre_reponses, reponses, bonne_reponse, corps, source, image, categorie) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
         args = (l[0], l[1], l[2], l[3], l[4], l[5], l[6], l[7], l[8], l[9], l[10])
         requete_db_sans_reponse(query, args)
     f.close()
 
-    f = open('categories.csv', 'r')
+    f = open('data/categories.csv', 'r')
     F = f.readlines()
-    for k in range(len(F)):
+    for k in range(len(F)-1):
         l = F[k].strip().split(';')
         query = '''INSERT INTO Categories (nom, nombre_anecdotes) VALUES (?, ?)'''
         args = (l[0], l[1])
         requete_db_sans_reponse(query, args)
     f.close()
+
+def save_data(data):
+    # Fonction ajoutant une anecdote dans la BD
+    query = '''INSERT INTO Anecdote (date, auteur, titre, question, nombre_reponses, reponses, bonne_reponse, corps, source, image, categorie) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
+    requete_db_sans_reponse(query, data)
 
 def affichage_anecdotes(catagorie):
     # Fonction renvoyant une liste de tuples correspondant à toutes les anecdotes de la BD de la catégorie donnée
@@ -119,8 +124,7 @@ def affichage_anecdote(id_anecdote):
 def affichage_du_jour():
     # Fonction renvoyant une liste de tuples correspondant à l'anecdote du jour
     # Cette fonction ne renvoit que le titre, l'auteur, la description et la date
-
-    query = '''SELECT titre, auteur, description, date FROM Anecdotes WHERE date = ?'''
+    query = '''SELECT titre, question, nombre_reponses, reponses, bonne_reponse, corps, source, date FROM Anecdotes WHERE date = ?'''
     args = (date.today().strftime('%Y%m%d'))
     res = requete_db_avec_reponse(query, args)
     return res

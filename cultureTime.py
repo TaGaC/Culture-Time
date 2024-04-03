@@ -22,12 +22,18 @@ questions = [
     # Ajoutez d'autres questions ici au besoin
 ]
 
+# Utiliser la base de données
+initdb()
+init_data()
+cursor, db = connectdb()
+
 #def des routes:
  
 #/home (max)
 @app.route("/")
 def home():
     return render_template("home.html", title = "CultureTime")
+
 
 @app.route("/sign-in")
 def sign_in():
@@ -45,9 +51,12 @@ def profile():
 @app.route("/dailyquestion", methods=["GET", "POST"])
 def dailyquestion():
     # Récupérer la question du jour
+    res = affichage_du_jour()
     today_question = questions[0]  # Vous pouvez personnaliser cette logique pour choisir une question différente chaque jour
     correct_answer = today_question["correct_answer"]  # Récupérer la bonne réponse
     return render_template("dailyquestion.html", title="Daily Question", question=today_question, correct_answer=correct_answer)
+
+
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port='8080')
