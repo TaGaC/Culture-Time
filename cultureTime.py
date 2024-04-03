@@ -52,8 +52,12 @@ def profile():
 def dailyquestion():
     # Récupérer la question du jour
     res = affichage_du_jour()
-    today_question = questions[0]  # Vous pouvez personnaliser cette logique pour choisir une question différente chaque jour
-    correct_answer = today_question["correct_answer"]  # Récupérer la bonne réponse
+    titre = res[0]
+    question = res[1]
+    reponses = res[2]
+    bonne_reponse = res[3]
+    corps = res[4]
+    source = res[5]
     return render_template("dailyquestion.html", title="Daily Question", question=today_question, correct_answer=correct_answer)
 
 

@@ -54,7 +54,6 @@ def initdb():
         auteur	TEXT NOT NULL,
         titre	TEXT NOT NULL,
         question TEXT NOT NULL,
-        nombre_reponses INTEGER NOT NULL,
         reponses TEXT NOT NULL,
         bonne_reponse TEXT NOT NULL,
         corps	TEXT NOT NULL,
@@ -84,8 +83,8 @@ def init_data():
     F = f.readlines()
     for k in range(len(F)):
         l = F[k].strip().split(';')
-        query = '''INSERT INTO Anecdotes (date, auteur, titre, question, nombre_reponses, reponses, bonne_reponse, corps, source, image, categorie) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
-        args = (l[0], l[1], l[2], l[3], l[4], l[5], l[6], l[7], l[8], l[9], l[10])
+        query = '''INSERT INTO Anecdotes (date, auteur, titre, question, reponses, bonne_reponse, corps, source, image, categorie) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
+        args = (l[0], l[1], l[2], l[3], l[4], l[5], l[6], l[7], l[8], l[9])
         requete_db_sans_reponse(query, args)
     f.close()
 
@@ -100,7 +99,7 @@ def init_data():
 
 def save_data(data):
     # Fonction ajoutant une anecdote dans la BD
-    query = '''INSERT INTO Anecdote (date, auteur, titre, question, nombre_reponses, reponses, bonne_reponse, corps, source, image, categorie) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
+    query = '''INSERT INTO Anecdote (date, auteur, titre, question, reponses, bonne_reponse, corps, source, image, categorie) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
     requete_db_sans_reponse(query, data)
 
 def affichage_anecdotes(catagorie):
@@ -124,7 +123,7 @@ def affichage_anecdote(id_anecdote):
 def affichage_du_jour():
     # Fonction renvoyant une liste de tuples correspondant à l'anecdote du jour
     # Cette fonction ne renvoit que le titre, l'auteur, la description et la date
-    query = '''SELECT titre, question, nombre_reponses, reponses, bonne_reponse, corps, source, date FROM Anecdotes WHERE date = ?'''
+    query = '''SELECT titre, question, reponses, bonne_reponse, corps, source, date FROM Anecdotes WHERE date = ?'''
     args = (date.today().strftime('%Y%m%d'))
     res = requete_db_avec_reponse(query, args)
     return res
