@@ -18,12 +18,26 @@ Session(app)
 #/home (max)
 @app.route("/")
 def home():
-    return render_template("home.html", title = "CultureTime")
+    user_authenticated = session.get('user_authenticated', False)
+    return render_template('home.html', user_authenticated=user_authenticated, title = "CultureTime")
 
-
-@app.route("/sign-in")
+# Route pour la page de connexion
+@app.route('/sign-in', methods=['GET', 'POST'])
 def sign_in():
+    if request.method == 'POST':
+        # Vérifiez les informations de connexion (vous devez implémenter cette partie)
+        # Si les informations sont correctes, définissez la session pour indiquer que l'utilisateur est connecté
+        session['user_authenticated'] = True
+        return redirect('/')
     return render_template("sign-in.html", title = "Sign In")
+
+# Route pour la déconnexion
+@app.route('/sign-out')
+def sign_out():
+    session.pop('user_authenticated', None)
+    return redirect('/')
+
+
 
 @app.route("/sign-up")
 def sign_up():
@@ -46,6 +60,7 @@ def dailyquestion():
     source = res[0][5]
     return render_template("dailyquestion.html", title="Daily Question", question=question, reponses=reponses, bonne_reponse=bonne_reponse, corps=corps, source=source)
 
+
 # Route pour la page "records"
 @app.route("/records/<int:i>")
 def records(i):
@@ -53,6 +68,7 @@ def records(i):
     i_anecdotes = get_anecdotes(i)
     # Rendez le modèle "records.html" en passant les données des anecdotes
     return render_template("records.html", title="Records", questions=i_anecdotes, i=i)
+
 
 
 @app.route("/question/<int:i>", methods=["GET", "POST"])
@@ -71,6 +87,31 @@ def selected_question(i):
     else:
         # Gérer le cas où aucune question n'est trouvée pour l'ID donné
         return "Question not found", 404
+    
+    
+@app.route("/records/filter", methods=["GET"])
+def filter_records():
+    search_query = request.args.get("search", "")
+    category_query = request.args.get("category", "")
+    
+    # Récupérer les anecdotes filtrées en fonction des critères de recherche
+    filtered_anecdotes = get_filtered_anecdotes(search_query, category_query)
+
+    # Passer les filtres appliqués au modèle
+    return render_template("records.html", title="Records", questions=filtered_anecdotes, i=5, search_query=search_query, category_query=category_query)
+
+
+@app.route("/records/category", methods=["GET"])
+def category_records():
+    search_query = request.args.get("search", "")
+    category_query = request.args.get("category", "")
+    
+    # Récupérer les anecdotes filtrées en fonction des critères de recherche
+    filtered_anecdotes = get_filtered_anecdotes(search_query, category_query)
+
+    # Passer les filtres appliqués au modèle
+    return render_template("records.html", title="Records", questions=filtered_anecdotes, i=5, search_query=search_query, category_query=category_query)
+
     
 
 

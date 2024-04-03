@@ -150,6 +150,36 @@ def get_anecdotes(i):
     return selected_rows
 
 
+def get_all_anecdotes():
+    # Connexion à la base de données
+    connection = sqlite3.connect('./data/cultureTime.db')
+    cursor = connection.cursor()
+
+    # Exécution de la requête SQL pour sélectionner toutes les anecdotes
+    cursor.execute("SELECT * FROM Anecdotes")
+
+    # Récupération de toutes les lignes
+    selected_rows = cursor.fetchall()
+
+    # Fermeture du curseur et de la connexion
+    cursor.close()
+    connection.close()
+
+    # Convertir les tuples en dictionnaires
+    anecdotes = []
+    for row in selected_rows:
+        anecdote = {
+            'id_anecdote': row[0],
+            'title': row[1],
+            'category': row[2],
+            'content': row[3],
+            # Ajoutez d'autres colonnes au besoin
+        }
+        anecdotes.append(anecdote)
+
+    return anecdotes
+
+
 
 
 def select_question_number(i):
@@ -160,4 +190,40 @@ def select_question_number(i):
     res = requete_db_avec_reponse(query, (i,))
     return res
 
+
+def get_filtered_anecdotes(search_query, category_query):
+    # Connexion à la base de données
+    connection = sqlite3.connect('./data/cultureTime.db')
+    cursor = connection.cursor()
+
+    # Construction de la requête SQL de base
+    query = "SELECT * FROM Anecdotes WHERE 1=1"
+
+    # Ajout de la condition de recherche (titre)
+    if search_query:
+        query += " AND titre LIKE ?"
+        search_param = f"%{search_query}%"
+
+    # Ajout de la condition de catégorie
+    if category_query:
+        query += " AND categorie = ?"
+
+    # Exécution de la requête SQL avec les paramètres de recherche
+    if search_query and category_query:
+        cursor.execute(query, (search_param, category_query))
+    elif search_query:
+        cursor.execute(query, (search_param,))
+    elif category_query:
+        cursor.execute(query, (category_query,))
+    else:
+        cursor.execute(query)
+
+    # Récupération des résultats
+    selected_rows = cursor.fetchall()
+
+    # Fermeture du curseur et de la connexion
+    cursor.close()
+    connection.close()
+
+    return selected_rows
 
