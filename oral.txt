@@ -11,3 +11,9 @@ Pistes d'amélioration pour la suite:
     - permettre la modification des questions par la communauté
     -la rendre utilisable sur téléphone avec systeme de notification
     
+A modif ce soir:
+    -finir les filtres
+    -faire comme si on se connecter avec thomas et change le nom en hau a droite (ou juste mettre se déconnecter)
+    -faire le bouton notify mail 
+
+    Oral: partie 2 et 4  et peut etre conclusion

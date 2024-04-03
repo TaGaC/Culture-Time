@@ -75,7 +75,47 @@
             </div>
           </div>
         </div>
+        <!-- Message flash -->
+        <div id="flash-message" class="hidden fixed bottom-0 inset-x-0 pb-2 sm:pb-5 px-2 sm:px-0 sm:inset-0 flex items-end justify-center pointer-events-none">
+          <div class="w-full max-w-lg bg-white rounded-lg shadow-xl pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden">
+            <div class="p-4">
+              <div class="flex items-center">
+                <div class="flex-shrink-0">
+                  <!-- Heroicon name: outline/check-circle -->
+                  <svg class="h-6 w-6 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <div class="ml-3 w-0 flex-1 pt-0.5">
+                  <p id="flash-message-text" class="text-sm font-medium text-gray-900"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </main>
     </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        const form = document.querySelector("form");
+    
+        form.addEventListener("submit", function(event) {
+          event.preventDefault();
+          
+          // Afficher le message flash
+          const flashMessage = document.getElementById("flash-message");
+          const flashMessageText = document.getElementById("flash-message-text");
+          flashMessageText.textContent = "Registered email address. You will receive the question of the day tomorrow! ";
+          flashMessage.classList.remove("hidden");
+    
+          // Masquer le message après 3 secondes
+          setTimeout(function() {
+            flashMessage.classList.add("hidden");
+          }, 5000);
+        });
+      });
+    </script>
+    
 
 {% endblock %}
