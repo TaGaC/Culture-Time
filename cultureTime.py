@@ -49,6 +49,10 @@ def dailyquestion():
     correct_answer = today_question["correct_answer"]  # Récupérer la bonne réponse
     return render_template("dailyquestion.html", title="Daily Question", question=today_question, correct_answer=correct_answer)
 
+@app.route("/records")
+def records():
+    return render_template("records.html", title = "Records")
+
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port='8080')
 

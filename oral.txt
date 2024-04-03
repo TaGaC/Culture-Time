@@ -1,0 +1,13 @@
+Pistes d'amélioration pour la suite:
+
+    - Ajouter la page avec toutes les questions déjà posées
+    - Ajouter des fonctionnalités de recherche et de filtrage des données
+    - Lié le menu de gauche au filtre des catégories
+    -faire une adresse mail pour envoyer un mail de notification à l'utilisateur
+
+    On aura pas le temps:
+    - mettre en place un systeme de connection, avec un systeme de point pour chaque réponse bonne, et un classement des utilisateurs
+    - permettre l'ajout de nouvelles questions par la communauté
+    - permettre la modification des questions par la communauté
+    -la rendre utilisable sur téléphone avec systeme de notification
+    
