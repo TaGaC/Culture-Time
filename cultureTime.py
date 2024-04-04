@@ -118,7 +118,7 @@ def category_records():
 if __name__ == "__main__":
     # Utiliser la base de données
     if (False):
-        initDB()
+        initdb()
     if (False):
         init_data()
     app.run(debug=True, host='0.0.0.0', port='8080')
